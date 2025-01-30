@@ -1,9 +1,12 @@
-import PromotionFormModalWrapper from './client';
+import { use } from 'react';
+import PromotionModalClient from './client';
 
-export interface PageProps {
-  params: { id: string };
+interface PageProps {
+  params: Promise<{ id: string }>;
 }
 
 export default function Page({ params }: PageProps) {
-  return <PromotionFormModalWrapper companyId={params.id} />;
+  const { id } = use(params);
+
+  return <PromotionModalClient companyId={id} />;
 }

@@ -3,13 +3,13 @@
 import { useRouter } from 'next/navigation';
 import PromotionFormModal from '@/app/components/promotion-form-modal';
 
-interface PromotionFormModalWrapperProps {
+interface PromotionModalClientProps {
   companyId: string;
 }
 
-export default function PromotionFormModalWrapper({
+export default function PromotionModalClient({
   companyId,
-}: PromotionFormModalWrapperProps) {
+}: PromotionModalClientProps) {
   const router = useRouter();
 
   return (
