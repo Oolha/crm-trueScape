@@ -1,8 +1,6 @@
 'use client';
 
-interface GlobalErrorProps {}
-
-const GlobalError = ({}: GlobalErrorProps) => {
+const GlobalError = ({}) => {
   return (
     <html>
       <body>

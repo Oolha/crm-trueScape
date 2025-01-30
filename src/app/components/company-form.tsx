@@ -16,15 +16,6 @@ import InputField from '@/app/components/input-field';
 import LogoUploader from '@/app/components/logo-uploader';
 import StatusLabel from '@/app/components/status-label';
 
-interface InputFieldProps {
-  label: string;
-  name: string;
-  placeholder?: string;
-  required?: boolean;
-  type?: string;
-  as?: 'input' | 'select' | 'textarea';
-  children?: React.ReactNode;
-}
 export type CompanyFieldValues = {
   title: string;
   description: string;
