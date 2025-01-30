@@ -1,8 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 
-interface NotFoundProps {}
+export interface NotFoundProps {}
 
-const NotFound = ({}: NotFoundProps) => {
+export default function NotFound({}: NotFoundProps) {
   return (
     <div>
       <p>Could not found company</p>
@@ -11,6 +13,4 @@ const NotFound = ({}: NotFoundProps) => {
       </Link>
     </div>
   );
-};
-
-export default NotFound;
+}
