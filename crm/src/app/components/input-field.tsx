@@ -2,8 +2,13 @@
 import { Field } from 'formik';
 
 export interface InputFieldProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+  extends React.InputHTMLAttributes<
+    HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+  > {
   label?: string;
+  as?: 'input' | 'select' | 'textarea';
+  required?: boolean;
+  children?: React.ReactNode;
 }
 function InputField({ label, id, ...rest }: InputFieldProps) {
   return (

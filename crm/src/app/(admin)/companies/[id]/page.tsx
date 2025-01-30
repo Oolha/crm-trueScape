@@ -11,6 +11,7 @@ export interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
+
   await queryClient.prefetchQuery({
     queryKey: ['companies', params.id],
     queryFn: () => getCompany(params.id, { cache: 'no-store' }),
