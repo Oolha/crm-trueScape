@@ -1,5 +1,3 @@
-interface DefaultProps {}
-
-export const Default = ({}: DefaultProps) => {
+export const Default = ({}) => {
   return null;
 };

@@ -1,6 +1,4 @@
-interface LoadingProps {}
-
-const Loading = ({}: LoadingProps) => {
+const Loading = ({}) => {
   return <div>Loading...</div>;
 };
 
