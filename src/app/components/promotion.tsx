@@ -7,10 +7,21 @@ export interface PromotionProps {
 
 export default function Promotion({ promotion }: PromotionProps) {
   return (
-    <div className="rounded overflow-hidden	bg-gray-100">
+    <div className="rounded overflow-hidden bg-gray-100">
       <div className="relative w-full h-40 bg-gray-300">
-        {promotion.avatar && (
-          <Image fill src={promotion.avatar} alt="promotion avatar" />
+        {promotion.avatar &&
+        typeof promotion.avatar === 'string' &&
+        promotion.avatar.startsWith('http') ? (
+          <Image
+            fill
+            src={promotion.avatar}
+            alt="promotion avatar"
+            className="object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gray-200">
+            <span className="text-gray-400">No image</span>
+          </div>
         )}
         <div className="w-14 h-14 absolute top-0 left-px rounded-br-full bg-lime-200" />
         <div className="w-14 h-14 absolute inset-0 py-3 pr-3 pl-0.5 rounded-br-full bg-gray-900">
