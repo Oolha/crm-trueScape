@@ -11,3 +11,30 @@
 body {
   background-color: #fafafa;
 }
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.bg-gradient {
+  background: linear-gradient(270deg, #b3e5fc, #b39ddb);
+  background-size: 400% 400%;
+}
+
+.animate-gradient {
+  animation: gradientAnimation 6s ease infinite;
+}
+
+.bg-parallax {
+  background-image: url('/parallax-bg.png'); /* Додай красивий фон */
+  background-size: cover;
+  background-attachment: fixed;
+}
