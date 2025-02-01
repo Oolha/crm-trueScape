@@ -36,6 +36,6 @@ npm run dev
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Oolha/crm-trueScape.git
+
    cd crm-trueScape
    ```
