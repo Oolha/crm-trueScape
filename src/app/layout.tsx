@@ -19,6 +19,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/images/favicon.png"
+        />
+      </head>
       <body className={font.className} suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
