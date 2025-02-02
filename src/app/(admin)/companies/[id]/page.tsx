@@ -5,11 +5,13 @@ import getQueryClient from '@/lib/utils/getQueryClient';
 import CompanyInfo from '@/app/components/company-info';
 import CompanyPromotions from '@/app/components/company-promotions';
 
-export interface PageProps {
-  params: { id: string };
-}
-
-export default async function Page({ params }: PageProps) {
+type Props = {
+  params: {
+    id: string;
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+export default async function Page({ params }: Props) {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
