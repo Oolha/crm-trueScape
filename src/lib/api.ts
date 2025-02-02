@@ -87,8 +87,22 @@ export const getCategories = (init?: RequestInit) => {
   return sendRequest<Category[]>(buildUrl('categories'), init);
 };
 
-export const getCompanies = (init?: RequestInit) => {
-  return sendRequest<Company[]>(buildUrl('companies'), init);
+export const getCompanies = async (
+  params: Record<string, string> = {},
+  init?: RequestInit,
+) => {
+  const queryParams: Record<string, string> = {};
+
+  if (params.search) {
+    queryParams.title = params.search;
+  }
+
+  if (params.categoryId) {
+    queryParams.categoryId = params.categoryId;
+  }
+
+  const url = `${buildUrl('companies')}?${stringifyQueryParams(queryParams)}`;
+  return sendRequest<Company[]>(url, init);
 };
 
 export const getCompany = (id: string, init?: RequestInit) => {
