@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: 'New Promotion - CRM TrueScape',
 };
 
-export default async function Page({ params }: { params: PageParams }) {
+export default function Page({ params }: { params: PageParams }) {
   return (
     <div className="py-6 px-10">
       <PromotionForm companyId={params.id} />
