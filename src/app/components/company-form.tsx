@@ -15,6 +15,9 @@ import Button from '@/app/components/button';
 import InputField from '@/app/components/input-field';
 import LogoUploader from '@/app/components/logo-uploader';
 import StatusLabel from '@/app/components/status-label';
+import { getSummaryStats, updateSummaryStats } from '@/lib/api';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export type CompanyFieldValues = {
   title: string;
@@ -40,6 +43,7 @@ export interface CompanyFormProps {
 
 export default function CompanyForm({ onSubmit }: CompanyFormProps) {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { data: categories } = useQuery<Category[]>({
     queryKey: ['categories'],
@@ -55,9 +59,42 @@ export default function CompanyForm({ onSubmit }: CompanyFormProps) {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: createCompany,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['companies'],
+    onSuccess: async (newCompany) => {
+      try {
+        const currentStats = await getSummaryStats();
+        await updateSummaryStats({
+          ...currentStats,
+          newCompanies: currentStats.newCompanies + 1,
+          activeCompanies:
+            newCompany.status === CompanyStatus.Active
+              ? currentStats.activeCompanies + 1
+              : currentStats.activeCompanies,
+        });
+
+        queryClient.invalidateQueries({ queryKey: ['companies'] });
+        queryClient.invalidateQueries({ queryKey: ['summary-stats'] });
+
+        toast.success('Company successfully created!', {
+          duration: 3000,
+          position: 'top-right',
+          style: {
+            background: '#10B981',
+            color: '#fff',
+          },
+        });
+
+        router.push('/companies');
+        router.refresh();
+      } catch (error) {
+        console.error('Error updating statistics:', error);
+        toast.error('Company created but failed to update statistics.');
+      }
+    },
+    onError: (error) => {
+      console.error('Error creating company:', error);
+      toast.error('Failed to create company. Please try again.', {
+        duration: 3000,
+        position: 'top-right',
       });
     },
   });

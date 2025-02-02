@@ -151,3 +151,18 @@ export const createPromotion = async (
     throw error;
   }
 };
+
+export const updateSummaryStats = async (
+  data: SummaryStats,
+  init?: RequestInit,
+) => {
+  return sendRequest<SummaryStats>(buildUrl('summary-stats', '1'), {
+    ...init,
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: {
+      ...init?.headers,
+      'content-type': 'application/json',
+    },
+  });
+};

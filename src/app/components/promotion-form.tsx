@@ -2,10 +2,19 @@
 
 import { Form, Formik } from 'formik';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Promotion, createPromotion, getCompany } from '@/lib/api';
+import {
+  Promotion,
+  createPromotion,
+  getCompany,
+  getSummaryStats,
+  updateSummaryStats,
+} from '@/lib/api';
 import Button from '@/app/components/button';
 import InputField from '@/app/components/input-field';
 import LogoUploader from '@/app/components/logo-uploader';
+
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export type PromotionFieldValues = {
   title: string;
@@ -29,6 +38,7 @@ export default function PromotionForm({
   onSubmit,
 }: PromotionFormProps) {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { data: company } = useQuery({
     queryKey: ['companies', companyId],
@@ -39,14 +49,45 @@ export default function PromotionForm({
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: createPromotion,
-    onSuccess: (data) => {
-      queryClient.setQueryData<Promotion[]>(
-        ['promotions', companyId],
-        (oldData) => {
-          if (!oldData) return [data];
-          return [...oldData, data];
-        },
-      );
+    onSuccess: async (data) => {
+      try {
+        queryClient.setQueryData<Promotion[]>(
+          ['promotions', companyId],
+          (oldData) => {
+            if (!oldData) return [data];
+            return [...oldData, data];
+          },
+        );
+        const currentStats = await getSummaryStats();
+
+        await updateSummaryStats({
+          ...currentStats,
+          promotions: currentStats.promotions + 1,
+        });
+
+        queryClient.invalidateQueries({ queryKey: ['promotions'] });
+        queryClient.invalidateQueries({ queryKey: ['summary-stats'] });
+
+        toast.success('Promotion successfully created!', {
+          duration: 3000,
+          position: 'top-right',
+          style: {
+            background: '#10B981',
+            color: '#fff',
+          },
+        });
+        router.refresh();
+      } catch (error) {
+        console.error('Error updating statistics:', error);
+        toast.error('Promotion created but failed to update statistics.');
+      }
+    },
+    onError: (error) => {
+      console.error('Error creating promotion:', error);
+      toast.error('Failed to create promotion. Please try again.', {
+        duration: 3000,
+        position: 'top-right',
+      });
     },
   });
 
